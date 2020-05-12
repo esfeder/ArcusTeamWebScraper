@@ -5,9 +5,8 @@ from bs4 import BeautifulSoup
 
 
 
-def main():
+def main(url):
 	
-	url = 'https://www.rockchipfirmware.com/content/virgo-ace-tablet'
 	
 	# fetch raw html content
 	page = requests.get(url)
@@ -27,16 +26,22 @@ def main():
 	for link in soup.findAll('a'):
 		download = link.get('href')
 
+		# TypeError 'NoneType' being thrown
+		if download == None:
+			continue
+
 		# isolate firmware file(s) to be downloaded
 		if filetype in download:
-
+			
 			# some files have domain name
-			link_clean = link.text.replace('http://www.rockchipfirmware.com/sites/default/files/', '')
+			link_idx = link.text.rfind('/')
+			link_clean = link.text[link_idx + 1:]
 			
 			# download the file(s)
 			with open(link_clean, 'wb') as file:
 				response = requests.get(domain + download)
 				file.write(response.content) 
+
 	
 
 
@@ -70,8 +75,6 @@ def main():
 
 	# insert dictionary with categories and firmware into Mongo
 	collection.insert(final) 
-	
-			
 
 
 
