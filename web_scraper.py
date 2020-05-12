@@ -7,7 +7,15 @@ import sys
 # url variable will be set to the argument given in terminal
 first_arg = sys.argv[1]
 
-def scraper(url = first_arg):
+second_arg = input("Debug mode?(y/n): ")
+
+# get answer to debug mode
+while second_arg != 'y' and second_arg != 'n':
+	print('Invalid response. Please respond y or n.')
+	second_arg = input('Debug mode?(y/n): ')		
+
+
+def scraper(url = first_arg, answer = second_arg):
 	
 	
 	# fetch raw html content
@@ -42,6 +50,7 @@ def scraper(url = first_arg):
 			# download the file(s)
 			with open(link_clean, 'wb') as file:
 				response = requests.get(domain + download)
+				ret_file = download
 				file.write(response.content) 
 
 	
@@ -77,6 +86,24 @@ def scraper(url = first_arg):
 
 	# insert dictionary with categories and firmware into Mongo
 	collection.insert(final) 
+	
+
+
+
+
+	if answer == 'y':
+		
+		print()
+		print('File Downloaded: ' + str(ret_file))
+
+		print()
+		print ('Metadata: ' + str(final))
+
+		print()
+		user = db.properties.find({key_list[0]:val_list[0]})
+		print('Location: ' + str(user))
+	
+	
 
 
 
