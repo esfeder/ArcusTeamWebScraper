@@ -12,7 +12,7 @@ collection = 'product'
 
 def main():
 	
-	url = 'https://www.rockchipfirmware.com/node/112'
+	url = 'https://www.rockchipfirmware.com/node/267'
 	
 	# fetch raw html content
 	page = requests.get(url)
@@ -27,7 +27,11 @@ def main():
 	for link in soup.findAll('a'):
 		download = link.get('href')
 		if filetype in download:
-			with open('X5_box_4.1.1_1227.zip', 'wb') as file:
+
+			# some files have domain name
+			link_clean = link.text.replace('http://www.rockchipfirmware.com/sites/default/files/', '')
+			
+			with open(link_clean, 'wb') as file:
 				response = requests.get(domain + download)
 				file.write(response.content) 
 	
