@@ -2,10 +2,12 @@
 from pymongo import MongoClient
 import requests
 from bs4 import BeautifulSoup
+import sys
 
+# url variable will be set to the argument given in terminal
+first_arg = sys.argv[1]
 
-
-def main(url):
+def scraper(url = first_arg):
 	
 	
 	# fetch raw html content
@@ -79,4 +81,5 @@ def main(url):
 
 
 if __name__ == "__main__":
-	main()
+	scraper()
+	#scraper('https://www.rockchipfirmware.com/node/274')
