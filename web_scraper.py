@@ -1,7 +1,6 @@
 # import the libraries
 from pymongo import MongoClient
 import requests
-import json
 from bs4 import BeautifulSoup
 
 
