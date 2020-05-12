@@ -1,13 +1,9 @@
 # import the libraries
-import pymongo
+from pymongo import MongoClient
 import requests
 import json
 from bs4 import BeautifulSoup
 
-
-host = 'localhost'
-database = 'firmware'
-collection = 'product'
 
 
 def main():
@@ -27,7 +23,7 @@ def main():
 	
 
 
-	'''
+	
 
 	for link in soup.findAll('a'):
 		download = link.get('href')
@@ -42,12 +38,12 @@ def main():
 			with open(link_clean, 'wb') as file:
 				response = requests.get(domain + download)
 				file.write(response.content) 
-	'''
+	
 
 
 
 
-	'''
+	
 
 	# Device name and Submitted by are hidden
 	key_list = ['Device name', 'Submitted by']
@@ -64,9 +60,18 @@ def main():
 	# create dictionary  with keys as categories and values as metadata
 	final = {k : v for k,v in zip(key_list, val_list)}
 	
-	'''					
+						
 
-		
+
+	
+	# create connection to MongoDB
+	client = MongoClient('localhost', 27017)
+	db = client['firmware']
+	collection = db['properties']
+
+	# insert dictionary with categories and firmware into Mongo
+	collection.insert(final) 
+	
 			
 
 
